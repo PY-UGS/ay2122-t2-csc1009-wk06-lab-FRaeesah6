@@ -1,5 +1,4 @@
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 public class Qn4to6 {
 
@@ -26,15 +25,31 @@ public class Qn4to6 {
             hashmap.put(hashmap.size(), value);
         }
         else {
-            int i = 0;
-            while(hashmap.get(i) < value){
-                i++;
+            hashmap.put(hashmap.size(), value);
+            List<Integer> mapKeys = new ArrayList<>(hashmap.keySet());
+            List<Integer> mapValues = new ArrayList<>(hashmap.values());
+            Collections.sort(mapValues);
+            Collections.sort(mapKeys);
+
+            HashMap<Integer, Integer> sortedMap =
+                    new HashMap<>();
+            int count = 0;
+            for (int val : mapValues) {
+                Iterator<Integer> keyIt = mapKeys.iterator();
+
+                while (keyIt.hasNext()) {
+                    Integer key = keyIt.next();
+                    int comp1 = hashmap.get(key);
+
+                    if (comp1 == val) {
+                        keyIt.remove();
+                        sortedMap.put(count, val);
+                        count++;
+                        break;
+                    }
+                }
             }
-            int key = hashmap.size();
-            for(int j = i + 1; j < hashmap.size(); j++){
-                hashmap.put(key, hashmap.get(key - 1));
-                key--;
-            }
+            hashmap.putAll(sortedMap);
         }
     }
 
